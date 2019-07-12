@@ -10,6 +10,9 @@ use quicksilver::{
 struct Game {
     title: Asset<Image>,
     mononoki_font_info: Asset<Image>,
+    map_size: Vector,
+    map: Vec<Tile>,
+    entities: Vec<Entity>,
 }
 
 impl State for Game {
@@ -27,9 +30,16 @@ impl State for Game {
                 &FontStyle::new(20.0, Color::BLACK))
         }));
 
+        let map_size = Vector::new(20, 15);
+        let map = generate_map(map_size);
+        let mut entities = generate_entities();
+
         Ok(Self {
             title,
-            mononoki_font_info
+            mononoki_font_info,
+            map_size,
+            map,
+            entities,
         })
     }
 
@@ -95,13 +105,13 @@ fn generate_map(size: Vector) -> Vec<Tile> {
     map
 }
 
-#derive(Clone, Debug, PartialEq)
+#[derive(Clone, Debug, PartialEq)]
 struct Entity {
     pos:  Vector,
     glyph: char,
     color: Color,
     hp: i32,
-    max_hp:
+    max_hp: i32,
 }
 
 fn generate_entities() -> Vec<Entity> {
