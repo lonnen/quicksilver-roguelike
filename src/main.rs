@@ -126,6 +126,7 @@ impl State for Game {
         })?;
 
         let tile_size_px = self.tile_size_px;
+        let offset_px = Vector::new(50, 50);
 
         let (tileset, map) = (&mut self.tileset, &self.map);
         tileset.execute( |tileset| {
@@ -141,6 +142,26 @@ impl State for Game {
             }
             Ok(())
         })?;
+
+        let player = &self.entities[self.player_id];
+        let full_health_width_px = 100.0;
+        let current_health_width_px =
+            (player.hp as f32 / player.max_hp as f32) * full_health_width_px;
+
+        let map_size_px = self.map_size.times(tile_size_px);
+        let health_bar_pos_px = offset_px + Vector::new(map_size_px.x, 0.0);
+
+        // Full health bar
+        window.draw(
+            &Rectangle::new(health_bar_pos_px, (full_health_width_px, tile_size_px.y)),
+            Col(Color::RED.with_alpha(0.5)),
+        );
+
+        // Current health bar
+        window.draw(
+            &Rectangle::new(health_bar_pos_px, (current_health_width_px, tile_size_px.y)),
+            Col(Color::RED),
+        );
 
         Ok(())
     }
