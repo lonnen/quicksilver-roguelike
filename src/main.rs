@@ -1,6 +1,6 @@
 use quicksilver::{
-    geom::Vector,
-    graphics::{Color, Font, FontStyle, Image},
+    geom::{Shape, Vector},
+    graphics::{Background::Img, Color, Font, FontStyle, Image},
     lifecycle::{run, Asset, Settings, State, Window},
     prelude::*,
     Future,
@@ -65,6 +65,34 @@ impl State for Game {
         Ok(())
     }
 
+}
+
+#[derive(Clone, Debug, PartialEq)]
+struct Tile {
+    pos: Vector,
+    glyph: char,
+    color: Color
+}
+
+fn generate_map(size: Vector) -> Vec<Tile> {
+    let width = size.x as usize;
+    let height = size.y as usize;
+    let mut map = Vec::with_capacity(width * height);
+    for x in 0..width {
+        for y in 0..height {
+            let mut tile = Tile {
+                pos: Vector::new(x as f32, y as f32),
+                glyph: '.',
+                color: Color::BLACK,
+            };
+
+            if x == 0 || x == width - 1 || y == 0 || y == height - 1 {
+                tile.glyph = '#';
+            };
+            map.push(tile);
+        }
+    }
+    map
 }
 
 fn main() {
