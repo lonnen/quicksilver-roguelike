@@ -95,6 +95,15 @@ fn generate_map(size: Vector) -> Vec<Tile> {
     map
 }
 
+#derive(Clone, Debug, PartialEq)
+struct Entity {
+    pos:  Vector,
+    glyph: char,
+    color: Color,
+    hp: i32,
+    max_hp:
+}
+
 fn main() {
     let settings = Settings {
         ..Default::default()
