@@ -13,6 +13,7 @@ struct Game {
     map_size: Vector,
     map: Vec<Tile>,
     entities: Vec<Entity>,
+    player_id: usize,
 }
 
 impl State for Game {
@@ -33,6 +34,14 @@ impl State for Game {
         let map_size = Vector::new(20, 15);
         let map = generate_map(map_size);
         let mut entities = generate_entities();
+        let player_id = entities.len();
+        entities.push(Entity {
+            pos: Vector::new(5, 3),
+            glyph: '@',
+            color: Color::BLUE,
+            hp: 3,
+            max_hp: 5,
+        });
 
         Ok(Self {
             title,
@@ -40,6 +49,7 @@ impl State for Game {
             map_size,
             map,
             entities,
+            player_id,
         })
     }
 
