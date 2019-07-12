@@ -12,6 +12,7 @@ use std::collections::HashMap;
 struct Game {
     title: Asset<Image>,
     mononoki_font_info: Asset<Image>,
+    square_font_info: Asset<Image>,
     map_size: Vector,
     map: Vec<Tile>,
     entities: Vec<Entity>,
@@ -21,6 +22,7 @@ struct Game {
 }
 
 impl State for Game {
+
     /// load assets and initialize
     fn new() -> Result<Self> {
         let font_mononoki = "mononoki-Regular.ttf";
@@ -35,6 +37,13 @@ impl State for Game {
                 &FontStyle::new(20.0, Color::BLACK))
         }));
 
+        let square_font_info = Asset::new(Font::load(font_mononoki).and_then(move |font| {
+            font.render(
+                "Square font by Wouter Van Oortmerssen, terms: CC BY 3.0",
+                &FontStyle::new(20.0, Color::BLACK),
+            )
+        }));
+
         let map_size = Vector::new(20, 15);
         let map = generate_map(map_size);
         let mut entities = generate_entities();
@@ -47,11 +56,11 @@ impl State for Game {
             max_hp: 5,
         });
 
+        let font_square = "square.ttf";
         let game_glyphs = "#@g.%";
+        let tile_size_px = Vector::new(24, 24);
 
-        let tile_size_px = Vector::new(12, 24);
-
-        let tileset = Asset::new(Font::load(font_mononoki).and_then(move |text| {
+        let tileset = Asset::new(Font::load(font_square).and_then(move |text| {
             let tiles = text
                 .render(game_glyphs, &FontStyle::new(tile_size_px.y, Color::WHITE))
                 .expect("Could not render the font tileset.");
@@ -67,6 +76,7 @@ impl State for Game {
         Ok(Self {
             title,
             mononoki_font_info,
+            square_font_info,
             map_size,
             map,
             entities,
@@ -100,6 +110,16 @@ impl State for Game {
                 &image
                     .area()
                     .translate((2, window.screen_size().y as i32 - 60)),
+                Img(&image),
+            );
+            Ok(())
+        })?;
+
+        self.square_font_info.execute(|image| {
+            window.draw(
+                &image
+                    .area()
+                    .translate((2, window.screen_size().y as i32 - 30)),
                 Img(&image),
             );
             Ok(())
