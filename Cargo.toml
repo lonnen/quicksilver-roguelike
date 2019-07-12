@@ -5,3 +5,4 @@ authors = ["lonnen <chris.lonnen@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+quicksilver = { version = "0.3.15", default-features = false, features = ["fonts", "saving"]}
