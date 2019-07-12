@@ -1,5 +1,6 @@
 use quicksilver::{
-    lifecycle::{State, Window},
+    geom::Vector,
+    lifecycle::{run, Settings, State, Window},
     Result,
 };
 
@@ -24,5 +25,8 @@ impl State for Game {
 }
 
 fn main() {
-    println!("Hello, world!");
+    let settings = Settings {
+        ..Default::default()
+    };
+    run::<Game>("Quicksilver Roguelike", Vector::new(800, 600), settings);
 }
