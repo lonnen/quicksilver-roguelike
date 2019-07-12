@@ -112,8 +112,9 @@ impl State for Game {
             for tile in map.iter() {
                 if let Some(image) = tileset.get(&tile.glyph) {
                     let pos_px = tile.pos.times(tile_size_px);
+                    let offset_px = Vector::new(50, 120);
                     window.draw(
-                        &Rectangle::new(pos_px, image.area().size()),
+                        &Rectangle::new(offset_px + pos_px, image.area().size()),
                         Blended(&image, tile.color),
                     );
                 }
